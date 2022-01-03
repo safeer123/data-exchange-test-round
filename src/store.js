@@ -27,7 +27,10 @@ const rootReducer = (state = initialState, action) => {
       return state;
     }
     case Actions.TABLE_DATA_RECEIVED: {
-      return state;
+      return {
+        ...state,
+        data: action.data
+      };
     }
     default:
       return state;
