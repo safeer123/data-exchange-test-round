@@ -43,11 +43,13 @@ export default () => {
   }, []);
 
   React.useEffect(() => {
-    socketController.connect();
-    setTimeout(() => {
-      const symbols = data?.map(item => item.symbol) || [];
-      socketController.sendData(symbols);
-    }, 3000);
+    const symbols = data?.map(item => item.symbol) || [];
+    if(symbols.length > 0) {
+      socketController.connect();
+      setTimeout(() => {
+        socketController.sendData(symbols);
+      }, 3000);
+    }
   }, [data]);
 
   return (

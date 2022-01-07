@@ -1,14 +1,15 @@
 
-const WS_URL = "wss://production-socket.delta.exchange";
+const WS_URL = "wss://production-esocket.delta.exchange/";
 
 class WSController {
 
     sendData(symbols) {
         if(this.ws?.readyState === WebSocket.OPEN) {
-            this.ws.send({
+            const strigifiedMsg = JSON.stringify({
                 name: "v2/ticker", 
                 symbols,
             });
+            this.ws.send(strigifiedMsg);
         } else {
             this.pendingMsg = symbols;
         }
@@ -19,6 +20,10 @@ class WSController {
     }
     
     connect() {
+        if(this.ws?.readyState === WebSocket.OPEN) {
+            // already connected, ignore
+            return;
+        }
         this.ws = new WebSocket(WS_URL);
         // Connection opened
         this.ws.addEventListener('open', (event) => {
